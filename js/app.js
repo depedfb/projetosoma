@@ -2583,11 +2583,74 @@ document.addEventListener('DOMContentLoaded', () => {
   sidebarOverlay.addEventListener('click', closeMobileSidebar);
 
   // ==========================================================================
-  // 10. INICIALIZAÇÃO DO APP
+  // 10. PRIVACIDADE LGPD E LIMPEZA DE DADOS LOCAIS
+  // ==========================================================================
+
+  const PRIVACY_STORAGE_KEY = 'utfpr_auxilio_privacy_consent';
+
+  function initPrivacyBanner() {
+    const banner = document.getElementById('privacyBanner');
+    const btnAccept = document.getElementById('btnAcceptPrivacy');
+
+    if (!banner || !btnAccept) return;
+
+    try {
+      const hasAccepted = localStorage.getItem(PRIVACY_STORAGE_KEY);
+      if (!hasAccepted) {
+        setTimeout(() => {
+          banner.classList.add('is-visible');
+          banner.setAttribute('aria-hidden', 'false');
+        }, 600);
+      }
+
+      btnAccept.addEventListener('click', () => {
+        try {
+          localStorage.setItem(PRIVACY_STORAGE_KEY, 'true');
+        } catch (e) {
+          console.warn('Não foi possível salvar preferência no localStorage:', e);
+        }
+        banner.classList.remove('is-visible');
+        banner.setAttribute('aria-hidden', 'true');
+      });
+    } catch (e) {
+      console.warn('Acesso ao localStorage restrito:', e);
+    }
+  }
+
+  function initClearDataButton() {
+    const btnClear = document.getElementById('btnClearData');
+    if (!btnClear) return;
+
+    btnClear.addEventListener('click', () => {
+      const confirmReset = window.confirm(
+        '⚠️ ATENÇÃO: Deseja limpar todos os dados locais?\n\n' +
+        'Esta ação irá apagar todas as respostas salvas, simulações do assistente e progresso dos checklists gravados neste navegador.\n\n' +
+        'Deseja continuar?'
+      );
+
+      if (confirmReset) {
+        try {
+          localStorage.clear();
+          if (window.sessionStorage) {
+            sessionStorage.clear();
+          }
+          window.location.reload();
+        } catch (err) {
+          console.error('Erro ao limpar localStorage:', err);
+          alert('Ocorreu um erro ao limpar os dados locais. Por favor, limpe o cache do seu navegador.');
+        }
+      }
+    });
+  }
+
+  // ==========================================================================
+  // 11. INICIALIZAÇÃO DO APP
   // ==========================================================================
   
   buildSidebarNav();
   handleRoute();
+  initPrivacyBanner();
+  initClearDataButton();
   
   // Escuta mudanças de hash na URL para navegação por links do navegador
   window.addEventListener('hashchange', handleRoute);

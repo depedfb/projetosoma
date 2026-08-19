@@ -2370,3 +2370,200 @@ button, input, select {
   }
 }
 
+/* ==========================================================================
+   COMPONENTES DE PRIVACIDADE E PERSISTÊNCIA (LGPD & RESET DE DADOS)
+   ========================================================================== */
+
+/* 1. Banner de Privacidade (Rodapé Fixo) */
+.privacy-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background-color: #141414;
+  color: #ffffff;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4);
+  border-top: 3px solid var(--primary, #f3c400);
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s ease, 
+              visibility 0.4s ease;
+  font-family: var(--font-body);
+}
+
+.privacy-banner.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.privacy-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.privacy-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.privacy-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(243, 196, 0, 0.15);
+  border: 1px solid rgba(243, 196, 0, 0.4);
+  border-radius: 50%;
+  color: var(--primary, #f3c400);
+}
+
+.privacy-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #f1f5f9;
+}
+
+.privacy-text code {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+  font-size: 0.85em;
+  color: var(--primary, #f3c400);
+}
+
+.privacy-text strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.privacy-actions {
+  flex-shrink: 0;
+}
+
+.btn-privacy-accept {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  background-color: var(--primary, #f3c400);
+  color: #000000;
+  font-family: var(--font-title);
+  font-weight: 750;
+  font-size: 0.88rem;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-fast);
+}
+
+.btn-privacy-accept:hover {
+  background-color: var(--primary-hover, #ffd700);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn-privacy-accept:active {
+  transform: translateY(0);
+}
+
+/* 2. Botão de Limpar Dados / Resetar Formulário */
+.data-reset-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.btn-clear-data {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background-color: var(--danger-bg, #fef2f2);
+  color: var(--danger, #ef4444);
+  border: 1px solid var(--danger, #ef4444);
+  border-radius: var(--radius-sm, 6px);
+  font-family: var(--font-title);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: center;
+}
+
+.btn-clear-data svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.btn-clear-data:hover {
+  background-color: var(--danger, #ef4444);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-clear-data:hover svg {
+  transform: scale(1.12);
+}
+
+.btn-clear-data:active {
+  transform: translateY(0);
+}
+
+.data-reset-hint {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .privacy-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .privacy-content {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .privacy-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .privacy-text {
+    font-size: 0.825rem;
+  }
+
+  .btn-privacy-accept {
+    width: 100%;
+    padding: 11px;
+  }
+}
+
+
