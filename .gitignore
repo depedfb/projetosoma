@@ -1,14 +1,10 @@
-﻿# Arquivos locais / backups / rascunhos
-Antigo copiar codigo.html
-Copia.html
-Guia_Pratico_Auxilio_Estudantil_UTFPR_EDITADO.html
-Guia_Pratico_Auxilio_Estudantil_UTFPR_EDITADO.txt
-apply_improvements.js
-find_spec.js
-edital aux.txt
+# Arquivos locais, backups, referências e scripts de desenvolvimento
+_arquivos_locais/
+*.tmp
 site/
 
 # Arquivos de sistema operacional / IDE
 .DS_Store
 Thumbs.db
-*.tmp
+.vscode/
+.idea/

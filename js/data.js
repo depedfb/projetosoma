@@ -293,7 +293,7 @@ const GUIA_DATA = [
             "title": "Tutorial de Inscrição (PDF)",
             "fileType": "pdf",
             "fileSize": "1.6 MB",
-            "url": "documentos/tutorial inscrição.pdf",
+            "url": "documentos/tutorial-inscricao-portal.pdf",
             "description": "Manual oficial ilustrado completo ensinando como fazer a inscrição passo a passo."
           }
         ]
@@ -629,7 +629,7 @@ const GUIA_DATA = [
             "title": "Tutorial Reaproveitamento (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial reaproveitamento.pdf",
+            "url": "documentos/tutorial-reaproveitamento-documentos.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como fazer o reaproveitamento."
           }
         ]
@@ -687,7 +687,7 @@ const GUIA_DATA = [
             "title": "Tutorial CNIS (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial cnis.pdf",
+            "url": "documentos/tutorial-extrato-cnis.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir o CNIS."
           }
         ]
@@ -756,7 +756,7 @@ const GUIA_DATA = [
             "title": "Tutorial CNIS (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial cnis.pdf",
+            "url": "documentos/tutorial-extrato-cnis.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir o CNIS."
           }
         ]
@@ -815,7 +815,7 @@ const GUIA_DATA = [
             "title": "Tutorial CNIS (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial cnis.pdf",
+            "url": "documentos/tutorial-extrato-cnis.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir o CNIS."
           }
         ]
@@ -873,7 +873,7 @@ const GUIA_DATA = [
             "title": "Tutorial IRPF (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial irpf.pdf",
+            "url": "documentos/tutorial-comprovante-irpf.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir ou comprovar isenção de IRPF."
           }
         ]
@@ -942,7 +942,7 @@ const GUIA_DATA = [
             "title": "Tutorial IRPF (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial irpf.pdf",
+            "url": "documentos/tutorial-comprovante-irpf.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir ou comprovar isenção de IRPF."
           }
         ]
@@ -1011,7 +1011,7 @@ const GUIA_DATA = [
             "title": "Tutorial IRPF (PDF)",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial irpf.pdf",
+            "url": "documentos/tutorial-comprovante-irpf.pdf",
             "description": "Manual oficial detalhado com imagens passo a passo sobre como emitir ou comprovar isenção de IRPF."
           }
         ]
@@ -1523,7 +1523,7 @@ const GUIA_DATA = [
             "title": "Edital Oficial Auxílio Estudantil",
             "fileType": "pdf",
             "fileSize": "19.2 MB",
-            "url": "documentos/edital aux.pdf",
+            "url": "documentos/edital-auxilio-estudantil.pdf",
             "description": "Edital nº 01/2026 PROAE que regula as concessões e manutenção dos auxílios estudantis."
           },
           {
@@ -1531,7 +1531,7 @@ const GUIA_DATA = [
             "title": "Tutorial de Inscrição",
             "fileType": "pdf",
             "fileSize": "1.6 MB",
-            "url": "documentos/tutorial inscrição.pdf",
+            "url": "documentos/tutorial-inscricao-portal.pdf",
             "description": "Guia passo a passo ilustrado ensinando como se inscrever na plataforma oficial."
           },
           {
@@ -1539,7 +1539,7 @@ const GUIA_DATA = [
             "title": "Tutorial CNIS",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial cnis.pdf",
+            "url": "documentos/tutorial-extrato-cnis.pdf",
             "description": "Instruções completas sobre como emitir seu extrato de contribuições CNIS (com ou sem vínculos)."
           },
           {
@@ -1547,7 +1547,7 @@ const GUIA_DATA = [
             "title": "Tutorial IRPF",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial irpf.pdf",
+            "url": "documentos/tutorial-comprovante-irpf.pdf",
             "description": "Passo a passo para obter cópia da Declaração de Imposto de Renda e recibo de entrega ou comprovar isenção."
           },
           {
@@ -1555,7 +1555,7 @@ const GUIA_DATA = [
             "title": "Tutorial Reaproveitamento",
             "fileType": "pdf",
             "fileSize": "1.1 MB",
-            "url": "documentos/tutorial reaproveitamento.pdf",
+            "url": "documentos/tutorial-reaproveitamento-documentos.pdf",
             "description": "Procedimento para estudantes veteranos solicitarem aproveitamento de documentos deferidos em 2025."
           }
         ]
@@ -1572,7 +1572,7 @@ const GUIA_DATA = [
             "title": "Declaração 1 - Renda",
             "fileType": "docx",
             "fileSize": "63 KB",
-            "url": "documentos/Declaração 1 - Renda.docx",
+            "url": "documentos/declaracao-01-renda.docx",
             "description": "Modelo para declaração de renda familiar ou rendimentos próprios."
           },
           {
@@ -1580,7 +1580,7 @@ const GUIA_DATA = [
             "title": "Declaração 2 - Situação moradia estudante",
             "fileType": "docx",
             "fileSize": "62 KB",
-            "url": "documentos/Declaração 2 - Situação moradia estudante.docx",
+            "url": "documentos/declaracao-02-situacao-moradia.docx",
             "description": "Comprovação de situação de moradia do estudante para fins de auxílio."
           },
           {
@@ -1588,7 +1588,7 @@ const GUIA_DATA = [
             "title": "Declaração 3 - Rural",
             "fileType": "docx",
             "fileSize": "122 KB",
-            "url": "documentos/Declaração 3 - Rural.docx",
+            "url": "documentos/declaracao-03-atividade-rural.docx",
             "description": "Modelo específico para declaração de rendimentos provenientes de atividade rural."
           },
           {
@@ -1596,7 +1596,7 @@ const GUIA_DATA = [
             "title": "Declaração 4 - Independência financeira",
             "fileType": "docx",
             "fileSize": "63 KB",
-            "url": "documentos/Declaração 4 - Independência financeira.docx",
+            "url": "documentos/declaracao-04-independencia-financeira.docx",
             "description": "Termo de declaração de independência financeira do núcleo familiar de origem."
           },
           {
@@ -1604,7 +1604,7 @@ const GUIA_DATA = [
             "title": "Declaração 5 - Diversas situações",
             "fileType": "docx",
             "fileSize": "62 KB",
-            "url": "documentos/Declaração 5 - Diversas situações.docx",
+            "url": "documentos/declaracao-05-diversas-situacoes.docx",
             "description": "Modelo para justificativa de outras realidades não cobertas pelas demais declarações."
           },
           {
@@ -1612,7 +1612,7 @@ const GUIA_DATA = [
             "title": "Declaração 6 - Pagamento de aluguel",
             "fileType": "docx",
             "fileSize": "62 KB",
-            "url": "documentos/Declaração 6 - Pagamento de aluguel.docx",
+            "url": "documentos/declaracao-06-pagamento-aluguel.docx",
             "description": "Declaração de pagamento de aluguel ou moradia estudantil financiada."
           },
           {
@@ -1620,7 +1620,7 @@ const GUIA_DATA = [
             "title": "Declaração 7 - Não obrigatoriedade IR",
             "fileType": "docx",
             "fileSize": "62 KB",
-            "url": "documentos/Declaração 7 - Não obrigatoriedade IR.docx",
+            "url": "documentos/declaracao-07-nao-obrigatoriedade-irpf.docx",
             "description": "Declaração de isenção e não obrigatoriedade de apresentação do Imposto de Renda."
           },
           {
@@ -1628,7 +1628,7 @@ const GUIA_DATA = [
             "title": "Declaração 8 - Renda terceiros",
             "fileType": "docx",
             "fileSize": "63 KB",
-            "url": "documentos/Declaração 8 - Renda terceiros .docx",
+            "url": "documentos/declaracao-08-renda-terceiros.docx",
             "description": "Modelo para comprovação de recebimento de pensão ou ajuda de terceiros."
           },
           {
@@ -1636,7 +1636,7 @@ const GUIA_DATA = [
             "title": "Termo de Desligamento Voluntário",
             "fileType": "docx",
             "fileSize": "51 KB",
-            "url": "documentos/TERMO DE DESLIGAMENTO VOLUNTÁRIO - AUXÍLIO ESTUDANTIL - UTFPR.docx",
+            "url": "documentos/termo-desligamento-voluntario.docx",
             "description": "Modelo oficial para solicitação de cancelamento voluntário do Auxílio Estudantil."
           }
         ]

@@ -1,16 +1,14 @@
-// LÓGICA PRINCIPAL - SITE GUIA AUXÍLIO ESTUDANTIL UTFPR
+// ==========================================================================
+// APLICAÇÃO PRINCIPAL - GUIA DE AUXÍLIO ESTUDANTIL UTFPR
+// ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   
-  // ==========================================================================
-  // 1. ESTADO GLOBAL DA APLICAÇÃO
-  // ==========================================================================
+  // === 1. ESTADO GLOBAL DA APLICAÇÃO ===
   
-  // Achatando a estrutura de categorias para obter uma lista linear de páginas
   const allPages = [];
   GUIA_DATA.forEach(category => {
     category.pages.forEach(page => {
-      // Guarda a referência de ID da categoria para navegação/breadcrumbs
       allPages.push({
         ...page,
         categoryTitle: category.title,
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activePageIndex = 0;
   let checklistState = JSON.parse(localStorage.getItem('guia_utfpr_checklist_state')) || {};
-  // Elementos do DOM
+
   const sidebar = document.getElementById('sidebar');
   const menuToggle = document.getElementById('menuToggle');
   const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -37,9 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeOptBtns = document.querySelectorAll('.theme-opt-btn');
   const themeToggleMobile = document.getElementById('themeToggleMobile');
 
-  // ==========================================================================
-  // 2. GERENCIAMENTO DE TEMAS E ACESSIBILIDADE
-  // ==========================================================================
+  // === 2. GERENCIAMENTO DE TEMAS E ACESSIBILIDADE ===
 
   const themes = ['light', 'dark'];
 
@@ -71,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('data-theme', themeName);
     localStorage.setItem('guia_utfpr_theme', themeName);
 
-    // Atualiza classes ativas nos seletores desktop
     themeOptBtns.forEach(btn => {
       if (btn.getAttribute('data-theme-val') === themeName) {
         btn.classList.add('active');
@@ -82,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Atualiza ícone e rótulo no botão mobile
     if (themeToggleMobile) {
       if (themeName === 'dark') {
         themeToggleMobile.innerHTML = sunIconSvg;
@@ -96,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Inicializa tema salvo ou detecta preferência do sistema
   const savedTheme = localStorage.getItem('guia_utfpr_theme');
   if (savedTheme && themes.includes(savedTheme)) {
     applyTheme(savedTheme);
@@ -106,26 +99,20 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme('light');
   }
 
-  // Event Listeners nos botões de tema do cabeçalho desktop
   themeOptBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const selectedTheme = btn.getAttribute('data-theme-val');
-      applyTheme(selectedTheme);
+      applyTheme(btn.getAttribute('data-theme-val'));
     });
   });
 
-  // Event Listener no botão de alternar tema mobile
   if (themeToggleMobile) {
     themeToggleMobile.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      const nextTheme = (currentTheme === 'light') ? 'dark' : 'light';
-      applyTheme(nextTheme);
+      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
     });
   }
 
-  // ==========================================================================
-  // 3. CONSTRUÇÃO DA NAVEGAÇÃO LATERAL
-  // ==========================================================================
+  // === 3. NAVEGAÇÃO LATERAL (SIDEBAR) ===
   
   function buildSidebarNav() {
     navMenu.innerHTML = '';
@@ -134,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const categoryDiv = document.createElement('div');
       categoryDiv.className = 'menu-category';
       
-      // Cabeçalho da Categoria
       const header = document.createElement('div');
       header.className = 'category-header';
       header.innerHTML = `
@@ -143,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       categoryDiv.appendChild(header);
       
-      // Lista de Páginas
       const ul = document.createElement('ul');
       ul.className = 'pages-list';
       
@@ -162,8 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
           a.href = `#page-${page.index}`;
         }
         
-        a.addEventListener('click', (e) => {
-          // No mobile, fecha a barra lateral ao clicar
+        a.addEventListener('click', () => {
           closeMobileSidebar();
         });
         
@@ -176,9 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================================================
-  // 4. ROTEAMENTO BASEADO NO HASH (#page-X)
-  // ==========================================================================
+  // === 4. ROTEAMENTO BASEADO EM HASH (#page-X) ===
   
   function handleRoute() {
     const hash = window.location.hash;
@@ -186,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (pageMatch) {
       const pageIndexAttr = parseInt(pageMatch[1], 10);
-      // Encontra a página com o index correspondente no array
       const targetIndex = allPages.findIndex(p => p.index === pageIndexAttr);
       if (targetIndex !== -1) {
         navigateToPage(targetIndex);
@@ -194,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    // Rota padrão: página inicial (Capa)
     navigateToPage(0);
   }
 
@@ -203,13 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const page = allPages[index];
     if (!page) return;
     
-    // Limpa busca ao mudar de página
     if (searchInput.value) {
       searchInput.value = '';
       clearSearch.style.display = 'none';
     }
     
-    // Atualiza o hash se for diferente, usando o index real da página
     if (window.location.hash !== `#page-${page.index}`) {
       window.location.hash = `#page-${page.index}`;
     }
@@ -219,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     highlightSidebarItem(index);
     updateProgress();
     
-    // Rola a área de conteúdo de volta para o topo
     pageContainer.scrollTop = 0;
   }
 
@@ -227,21 +204,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const page = allPages[index];
     if (!page) return;
     
-    // Remove classe ativa de todos os links
     document.querySelectorAll('.page-item-link').forEach(link => {
       link.classList.remove('active');
     });
     
-    // Adiciona classe ativa no link correspondente usando o index real do objeto de dados (page.index)
     const activeLink = document.querySelector(`.page-link-${page.index}`);
     if (activeLink) {
       activeLink.classList.add('active');
     }
   }
 
-  // ==========================================================================
-  // 5. RENDERIZAÇÃO DO CONTEÚDO DA PÁGINA
-  // ==========================================================================
+  // === 5. RENDERIZAÇÃO DO CONTEÚDO DAS PÁGINAS ===
   
   function renderActivePage() {
     const page = allPages[activePageIndex];
@@ -436,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </svg>
                 <span>Acessar Publicação Oficial no SEI-UTFPR</span>
               </a>
-              <a href="documentos/edital aux.pdf" download class="btn-edital-download">
+              <a href="documentos/edital-auxilio-estudantil.pdf" download class="btn-edital-download">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
@@ -473,7 +446,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Insere downloadsContainer se tiver elementos dentro
     if (downloadsContainer.children.length > 0) {
       pageWrapper.appendChild(downloadsContainer);
     }
@@ -481,7 +453,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pageContainer.appendChild(pageWrapper);
   }
 
-  // Dados de contato, telefones, responsáveis e horários dos 13 Câmpus da UTFPR (ASSAE) em ordem alfabética
+  // === 6. DADOS INSTITUCIONAIS DOS 13 CAMPI (ASSAE) ===
+
   const CAMPI_CONTACTS_DATA = [
     {
       name: 'Apucarana',
@@ -694,7 +667,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // Renderiza o seletor interativo dos 13 campi
+  // === 7. SELETOR INTERATIVO DE CONTATOS DOS CAMPI ===
+
   function renderCampiContacts(container) {
     const wrap = document.createElement('div');
     wrap.className = 'campi-contacts-wrapper';
@@ -789,7 +763,8 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(wrap);
   }
 
-  // Renderiza o visual de Capa personalizado
+  // === 8. RENDERIZAÇÃO DA CAPA INICIAL ===
+
   function renderCapa(container, page) {
     const capaDiv = document.createElement('div');
     capaDiv.className = 'capa-container';
@@ -905,7 +880,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Gerencia o estado de conclusão dos itens de checklist
+  // === 9. GERENCIAMENTO DE CHECKLISTS E PROGRESSO ===
+
   function toggleChecklistState(key, isChecked) {
     if (isChecked) {
       checklistState[key] = true;
@@ -916,7 +892,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProgress();
   }
 
-  // Lógica e renderização do Simulador de Elegibilidade Interativo (Wizard)
+  // === 10. SIMULADOR INTERATIVO (WIZARD DE ELEGIBILIDADE) ===
+
   function renderWizard(container) {
     container.innerHTML = '';
     
@@ -1818,13 +1795,13 @@ document.addEventListener('DOMContentLoaded', () => {
             docsList.push('<b>Comprovante de Isenção MIR:</b> Print da consulta "Não Entregue" do Portal Meu Imposto de Renda da Receita Federal para os membros maiores de 18 anos isentos (precisa conter CPF/nome no topo e autenticação no rodapé).');
           } else if (wizardState.irpf === 'isentos_sem_mir') {
             docsList.push('<b>Comprovante de Isenção MIR:</b> Print do Portal Meu Imposto de Renda para os membros isentos com acesso.');
-            docsList.push('<b>Declaração VII - Não Obrigatoriedade de IRPF (<a href="documentos/Declaração 7 - Não obrigatoriedade IR.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 7 (.docx)</a>):</b> Obrigatória para cada membro maior de 18 anos isento que não possui acesso ao gov.br Prata/Ouro para emitir o MIR. <b>Preenchimento:</b> Marque os anos de 2024 e/ou 2025 e o membro deve assinar.');
+            docsList.push('<b>Declaração VII - Não Obrigatoriedade de IRPF (<a href="documentos/declaracao-07-nao-obrigatoriedade-irpf.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 7 (.docx)</a>):</b> Obrigatória para cada membro maior de 18 anos isento que não possui acesso ao gov.br Prata/Ouro para emitir o MIR. <b>Preenchimento:</b> Marque os anos de 2024 e/ou 2025 e o membro deve assinar.');
           }
         }
         
         // 4. Independência Financeira
         if (wizardState.independencia === 'sim') {
-          docsList.push('<b>Declaração IV - Independência Financeira (<a href="documentos/Declaração 4 - Independência financeira.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 4 (.docx)</a>):</b> Deve ser preenchida e assinada por seus <b>pais ou responsável legal</b>, atestando expressamente que não contribuem financeira ou materialmente com o estudante. Deve conter as assinaturas e telefones de duas testemunhas externas (não familiares).');
+          docsList.push('<b>Declaração IV - Independência Financeira (<a href="documentos/declaracao-04-independencia-financeira.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 4 (.docx)</a>):</b> Deve ser preenchida e assinada por seus <b>pais ou responsável legal</b>, atestando expressamente que não contribuem financeira ou materialmente com o estudante. Deve conter as assinaturas e telefones de duas testemunhas externas (não familiares).');
           docsList.push('<b>Comprovantes de Independência:</b> Comprovante de endereço próprio diferente do dos pais, além de comprovante de renda própria suficiente para prover a subsistência.');
         }
         
@@ -1833,26 +1810,26 @@ document.addEventListener('DOMContentLoaded', () => {
           docsList.push('<b>Comprovante de Despesa de Moradia:</b> Cópia do contrato de locação em nome de algum membro do grupo familiar e recibo de pagamento do aluguel/financiamento recente.');
         } else if (wizardState.moradia === 'estudante_aluguel_contrato') {
           docsList.push('<b>Comprovantes para Auxílio Moradia:</b> Cópia do Contrato de Locação em seu nome e recibo de pagamento do aluguel recente na cidade do campus.');
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Resido sozinho e pago R$ ... de aluguel). Assine o documento.');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Resido sozinho e pago R$ ... de aluguel). Assine o documento.');
         } else if (wizardState.moradia === 'estudante_aluguel_sem_contrato') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Resido sozinho e pago R$ ... de aluguel). Assine.');
-          docsList.push('<b>Declaração VI - Comprovação de Pagamento de Aluguel (<a href="documentos/Declaração 6 - Pagamento de aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Deve ser preenchida e assinada pelo **proprietário/locador** do imóvel, atestando a locação informal e o valor pago. Requer assinatura de duas testemunhas de referência com dados completos (não familiares). <b>Preenchimento:</b> Marque a **Opção 1** (Sou proprietário do imóvel e Alugo residência sem contrato).');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Resido sozinho e pago R$ ... de aluguel). Assine.');
+          docsList.push('<b>Declaração VI - Comprovação de Pagamento de Aluguel (<a href="documentos/declaracao-06-pagamento-aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Deve ser preenchida e assinada pelo **proprietário/locador** do imóvel, atestando a locação informal e o valor pago. Requer assinatura de duas testemunhas de referência com dados completos (não familiares). <b>Preenchimento:</b> Marque a **Opção 1** (Sou proprietário do imóvel e Alugo residência sem contrato).');
           docsList.push('<b>Comprovante de Pagamento:</b> Recibo recente de pagamento do aluguel ou comprovante de transferência bancária ao proprietário.');
         } else if (wizardState.moradia === 'estudante_pensionato') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Resido em pensionato e pago R$ ...). Assine.');
-          docsList.push('<b>Declaração VI - Comprovação de Pagamento de Aluguel (<a href="documentos/Declaração 6 - Pagamento de aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Preenchida e assinada pelo **proprietário do pensionato**. <b>Preenchimento:</b> Marque a **Opção 2** (Alugo vaga em regime de pensionato). Deve ser assinado pelo dono do pensionato e conter duas testemunhas.');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Resido em pensionato e pago R$ ...). Assine.');
+          docsList.push('<b>Declaração VI - Comprovação de Pagamento de Aluguel (<a href="documentos/declaracao-06-pagamento-aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Preenchida e assinada pelo **proprietário do pensionato**. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Alugo vaga em regime de pensionato). Deve ser assinado pelo dono do pensionato e conter duas testemunhas.');
           docsList.push('<b>Comprovante de Pensionato:</b> Recibo de pagamento mensal recente.');
         } else if (wizardState.moradia === 'estudante_compartilhada') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 4</b> (Resido em moradia compartilhada/república, pagando R$ ... de aluguel). Liste os nomes, CPF e telefones dos seus colegas de república.');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 4</b> (Resido em moradia compartilhada/república, pagando R$ ... de aluguel). Liste os nomes, CPF e telefones dos seus colegas de república.');
           docsList.push('<b>Contrato de Locação e Comprovantes:</b> Contrato de aluguel da república e recibo de pagamento do último mês, acompanhados de comprovantes de rateio se houver.');
-          docsList.push('<b>Declaração VI - Comprovação de Aluguel (<a href="documentos/Declaração 6 - Pagamento de aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Caso a república não possua contrato formal assinado, o proprietário deve preencher e assinar a Declaração VI (Opção 1).');
+          docsList.push('<b>Declaração VI - Comprovação de Aluguel (<a href="documentos/declaracao-06-pagamento-aluguel.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 6 (.docx)</a>):</b> Caso a república não possua contrato formal assinado, o proprietário deve preencher e assinar a Declaração VI (Opção 1).');
         } else if (wizardState.moradia === 'estudante_cedido') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Resido sozinho e não pago aluguel - cedido gratuitamente) ou a opção de residência com familiares correspondente. Requer preenchimento de duas testemunhas de referência com dados completos (não familiares).');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Resido sozinho e não pago aluguel - cedido gratuitamente) ou a opção de residência com familiares correspondente. Requer preenchimento de duas testemunhas de referência com dados completos (não familiares).');
         } else if (wizardState.moradia === 'estudante_casado_aluguel') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 5</b> (Resido com cônjuge/filhos e pago R$ ...). Informou nome e CPF dos familiares.');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 5</b> (Resido com cônjuge/filhos e pago R$ ...). Informou nome e CPF dos familiares.');
           docsList.push('<b>Contrato de Locação e Recibos:</b> Contrato de aluguel e recibo recente em nome do estudante ou cônjuge.');
         } else if (wizardState.moradia === 'estudante_casado_proprio') {
-          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/Declaração 2 - Situação moradia estudante.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 6</b> (Resido com cônjuge/filhos e não pago aluguel).');
+          docsList.push('<b>Declaração II - Situação de Moradia do Estudante (<a href="documentos/declaracao-02-situacao-moradia.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 2 (.docx)</a>):</b> Preenchida por você. <b>Preenchimento:</b> Marque a <b>Opção 6</b> (Resido com cônjuge/filhos e não pago aluguel).');
         }
         
         // 7. Fontes de Renda específicas e suas respectivas declarações
@@ -1861,23 +1838,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (wizardState.fontesRenda.includes('autonomo')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para o membro familiar autônomo, profissional liberal ou trabalhador informal. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Exerço atividade de forma autônoma ou informal ou profissional liberal como...), preencha a atividade exercida, a média de rendimentos dos últimos 3 meses e informe nome e telefone de dois clientes atendidos.');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para o membro familiar autônomo, profissional liberal ou trabalhador informal. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Exerço atividade de forma autônoma ou informal ou profissional liberal como...), preencha a atividade exercida, a média de rendimentos dos últimos 3 meses e informe nome e telefone de dois clientes atendidos.');
         }
         
         if (wizardState.fontesRenda.includes('estagio')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Para o estudante ou membro estagiário/bolsista. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Recebo na condição de bolsista/estagiário do projeto/órgão...), informe a data de início e o valor de bolsa mensal. Anexe cópia do Termo de Compromisso de Estágio.');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Para o estudante ou membro estagiário/bolsista. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Recebo na condição de bolsista/estagiário do projeto/órgão...), informe a data de início e o valor de bolsa mensal. Anexe cópia do Termo de Compromisso de Estágio.');
         }
         
         if (wizardState.fontesRenda.includes('mei')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para os membros MEI da família. <b>Preenchimento:</b> Marque a <b>Opção 4</b> (Microempreendedor Individual), preencha o CNPJ, atividade e valor mensal médio. Anexe a Certidão de Condição de Microempreendedor Individual (CCMEI) e Declaração Anual do Simples Nacional (DASN-SIMEI) do último exercício.');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para os membros MEI da família. <b>Preenchimento:</b> Marque a <b>Opção 4</b> (Microempreendedor Individual), preencha o CNPJ, atividade e valor mensal médio. Anexe a Certidão de Condição de Microempreendedor Individual (CCMEI) e Declaração Anual do Simples Nacional (DASN-SIMEI) do último exercício.');
         }
         
         if (wizardState.fontesRenda.includes('desempregado')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para <b>cada membro maior de 18 anos</b> que se declare desempregado, estudante sem renda ou do lar. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Não exerço nenhuma atividade remunerada, formal ou informal) para atestar a ausência de renda.');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Obrigatória para <b>cada membro maior de 18 anos</b> que se declare desempregado, estudante sem renda ou do lar. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Não exerço nenhuma atividade remunerada, formal ou informal) para atestar a ausência de renda.');
         }
         
         if (wizardState.fontesRenda.includes('rural')) {
-          docsList.push('<b>Declaração III - Renda de Atividade Rural (<a href="documentos/Declaração 3 - Rural.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 3 (.docx)</a>):</b> Obrigatória para produtores rurais ou trabalhadores da agricultura. Deve ser emitida e preenchida/assinada por sindicato de produtores, sindicato de trabalhadores rurais ou Secretaria Municipal/Estadual de Agricultura. <b>Preenchimento:</b> Identifique a localização, área total da propriedade, condição de exploração (proprietário, arrendatário, etc.) e preencha o quadro de comercialização, receitas brutas e custos dos últimos 12 meses.');
+          docsList.push('<b>Declaração III - Renda de Atividade Rural (<a href="documentos/declaracao-03-atividade-rural.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 3 (.docx)</a>):</b> Obrigatória para produtores rurais ou trabalhadores da agricultura. Deve ser emitida e preenchida/assinada por sindicato de produtores, sindicato de trabalhadores rurais ou Secretaria Municipal/Estadual de Agricultura. <b>Preenchimento:</b> Identifique a localização, área total da propriedade, condição de exploração (proprietário, arrendatário, etc.) e preencha o quadro de comercialização, receitas brutas e custos dos últimos 12 meses.');
           docsList.push('<b>Comprovantes Rurais Adicionais:</b> Bloco de Notas de Produtor Rural (notas emitidas nos últimos 12 meses) e extrato DAP (Declaração de Aptidão ao Pronaf) ou CAF.');
         }
         
@@ -1890,29 +1867,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (wizardState.fontesRenda.includes('pensao_verbal')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Preenchida pelo responsável ou estudante que recebe. <b>Preenchimento:</b> Marque a <b>Opção 5</b> (Recebo pensão alimentícia de... no valor de R$ ... mensal).');
-          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/Declaração 8 - Renda terceiros .docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b>');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Preenchida pelo responsável ou estudante que recebe. <b>Preenchimento:</b> Marque a <b>Opção 5</b> (Recebo pensão alimentícia de... no valor de R$ ... mensal).');
+          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/declaracao-08-renda-terceiros.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b>');
           docsList.push('&bull; Se o estudante for maior de 18 anos: o genitor pagador deve assinar e marcar a <b>Opção 4</b> (Contribuo mensalmente com R$ ... de pensão para o estudante).');
           docsList.push('&bull; Se for para menor de 18 anos do grupo: a mãe ou responsável legal residente deve assinar e marcar a <b>Opção 5</b> (Estudante ... recebe pensão alimentícia de ... no valor de R$ ... mensal).');
         }
         
         if (wizardState.fontesRenda.includes('comissao')) {
-          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/Declaração 8 - Renda terceiros .docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Obrigatória para quem recebe comissão de vendas. Deve ser preenchida e assinada pelo parceiro/empresa pagadora. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Pago o valor mensal médio de R$ ... por comissão de vendas dos produtos...).');
+          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/declaracao-08-renda-terceiros.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Obrigatória para quem recebe comissão de vendas. Deve ser preenchida e assinada pelo parceiro/empresa pagadora. <b>Preenchimento:</b> Marque a <b>Opção 3</b> (Pago o valor mensal médio de R$ ... por comissão de vendas dos produtos...).');
         }
         
         if (wizardState.fontesRenda.includes('ajuda_terceiros')) {
-          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/Declaração 8 - Renda terceiros .docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> A ser preenchida e assinada por quem envia a ajuda financeira de fora do grupo familiar. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Contribuo financeiramente com o estudante ... com o valor de R$ ... mensais).');
+          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/declaracao-08-renda-terceiros.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> A ser preenchida e assinada por quem envia a ajuda financeira de fora do grupo familiar. <b>Preenchimento:</b> Marque a <b>Opção 1</b> (Contribuo financeiramente com o estudante ... com o valor de R$ ... mensais).');
         }
         
         if (wizardState.fontesRenda.includes('programa_social')) {
-          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/Declaração 1 - Renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Preenchida pelo beneficiário do domicílio. <b>Preenchimento:</b> Marque a <b>Opção 6</b> (Recebo do programa social ... o valor de R$ ... mensal).');
+          docsList.push('<b>Declaração I - Declaração de Renda (<a href="documentos/declaracao-01-renda.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 1 (.docx)</a>):</b> Preenchida pelo beneficiário do domicílio. <b>Preenchimento:</b> Marque a <b>Opção 6</b> (Recebo do programa social ... o valor de R$ ... mensal).');
           docsList.push('<b>Extrato de Pagamento do Programa:</b> Extrato recente do recebimento do benefício (ex: Bolsa Família), com nome do titular e valor histórico das parcelas.');
         }
         
         // 8. Situações Especiais e Casos de Exceção
         if (wizardState.situacoesEspeciais.includes('separacao_verbal')) {
-          docsList.push('<b>Declaração V - Diversas Situações (<a href="documentos/Declaração 5 - Diversas situações.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 5 (.docx)</a>):</b> Preenchida pelo genitor com quem você reside ou por você, descrevendo detalhadamente a separação de fato informal e o acordo de boca estabelecido. Exige assinatura de duas testemunhas de referência com dados completos.');
-          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/Declaração 8 - Renda terceiros .docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Se houver pensão informal decorrente dessa separação, junte a Declaração VIII (Opção 4 ou 5) preenchida conforme o caso.');
+          docsList.push('<b>Declaração V - Diversas Situações (<a href="documentos/declaracao-05-diversas-situacoes.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 5 (.docx)</a>):</b> Preenchida pelo genitor com quem você reside ou por você, descrevendo detalhadamente a separação de fato informal e o acordo de boca estabelecido. Exige assinatura de duas testemunhas de referência com dados completos.');
+          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/declaracao-08-renda-terceiros.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Se houver pensão informal decorrente dessa separação, junte a Declaração VIII (Opção 4 ou 5) preenchida conforme o caso.');
         }
         
         if (wizardState.situacoesEspeciais.includes('doenca_grave')) {
@@ -1924,11 +1901,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (wizardState.situacoesEspeciais.includes('aluguel_terceiros')) {
-          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/Declaração 8 - Renda terceiros .docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Preenchida e assinada por quem paga o seu aluguel de forma direta. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Pago o valor de R$ ... mensais a título de aluguel do imóvel localizado em...).');
+          docsList.push('<b>Declaração VIII - Renda de Terceiros (<a href="documentos/declaracao-08-renda-terceiros.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 8 (.docx)</a>):</b> Preenchida e assinada por quem paga o seu aluguel de forma direta. <b>Preenchimento:</b> Marque a <b>Opção 2</b> (Pago o valor de R$ ... mensais a título de aluguel do imóvel localizado em...).');
         }
         
         if (wizardState.situacoesEspeciais.includes('outros_casos')) {
-          docsList.push('<b>Declaração V - Diversas Situações (<a href="documentos/Declaração 5 - Diversas situações.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 5 (.docx)</a>):</b> Preenchida por você ou membro familiar justificando a realidade excepcional não prevista (ex: abandono, perda de contato, etc.). Deve conter duas referências.');
+          docsList.push('<b>Declaração V - Diversas Situações (<a href="documentos/declaracao-05-diversas-situacoes.docx" download class="wizard-doc-download-link">📥 Baixar Modelo 5 (.docx)</a>):</b> Preenchida por você ou membro familiar justificando a realidade excepcional não prevista (ex: abandono, perda de contato, etc.). Deve conter duas referências.');
         }
       }
       
@@ -2389,9 +2366,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ==========================================================================
-  // 6. CONTROLES DE NAVEGAÇÃO (ANTERIOR / PRÓXIMO)
-  // ==========================================================================
+  // === 11. CONTROLES DE NAVEGAÇÃO (ANTERIOR / PRÓXIMO) ===
   
   function updateNavigationControls() {
     prevBtn.disabled = (activePageIndex === 0);
@@ -2410,21 +2385,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ==========================================================================
-  // 7. PROGRESSO DE LEITURA
-  // ==========================================================================
+  // === 12. PROGRESSO GERAL DE LEITURA ===
   
   function updateProgress() {
-    // O progresso é baseado no índice da página atual em relação ao total de páginas
     const percent = Math.round((activePageIndex / (allPages.length - 1)) * 100);
-    
     progressText.textContent = `Progresso: ${percent}%`;
     progressBar.style.width = `${percent}%`;
   }
 
-  // ==========================================================================
-  // 8. BUSCA GLOBAL EM TEMPO REAL
-  // ==========================================================================
+  // === 13. BUSCA GLOBAL EM TEMPO REAL ===
   
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
@@ -2465,13 +2434,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let matchesCount = 0;
     
     allPages.forEach(page => {
-      // Ignora a capa na busca por padrão
       if (page.index === 0) return;
       
       let pageMatches = false;
       let textSnippet = '';
       
-      // Procura no título, eyebrow e subtítulo
       if (page.title.toLowerCase().includes(query) || 
           page.eyebrow.toLowerCase().includes(query) || 
           page.subtitle.toLowerCase().includes(query)) {
@@ -2479,7 +2446,6 @@ document.addEventListener('DOMContentLoaded', () => {
         textSnippet = page.subtitle;
       }
       
-      // Procura no conteúdo dos elementos
       const matchingElements = page.elements.filter(el => {
         if (el.content && el.content.toLowerCase().includes(query)) return true;
         if (el.type === 'download') {
@@ -2502,7 +2468,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultItem = document.createElement('div');
         resultItem.className = 'search-result-item';
         
-        // Destaca o termo de busca no snippet
         const highlightedSnippet = highlightText(textSnippet, query);
         
         resultItem.innerHTML = `
@@ -2527,7 +2492,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <p>Nenhum resultado encontrado para "${query}". tente termos diferentes.</p>
+        <p>Nenhum resultado encontrado para "${query}". Tente termos diferentes.</p>
       `;
       resultsWrapper.appendChild(noResults);
     } else {
@@ -2536,15 +2501,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     pageContainer.appendChild(resultsWrapper);
     
-    // Desabilita botões de navegação rápida quando estiver na tela de busca
     prevBtn.disabled = true;
     nextBtn.disabled = true;
   }
 
-  // Função utilitária para destacar o termo buscado
   function highlightText(text, query) {
     if (!text) return '';
-    const cleanText = text.replace(/<[^>]*>/g, ''); // Remove tags HTML para busca
+    const cleanText = text.replace(/<[^>]*>/g, '');
     const index = cleanText.toLowerCase().indexOf(query);
     if (index === -1) return cleanText.substring(0, 140) + '...';
     
@@ -2563,14 +2526,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  // ==========================================================================
-  // 9. EVENTOS DO DRAWER MOBILE (SIDEBAR GAVETA)
-  // ==========================================================================
+  // === 14. CONTROLE DO MENU MOBILE (DRAWER) ===
   
   function openMobileSidebar() {
     sidebar.classList.add('open');
     sidebarOverlay.classList.add('visible');
-    document.body.style.overflow = 'hidden'; // Evita scroll do fundo
+    document.body.style.overflow = 'hidden';
   }
 
   function closeMobileSidebar() {
@@ -2582,9 +2543,7 @@ document.addEventListener('DOMContentLoaded', () => {
   menuToggle.addEventListener('click', openMobileSidebar);
   sidebarOverlay.addEventListener('click', closeMobileSidebar);
 
-  // ==========================================================================
-  // 10. PRIVACIDADE LGPD E LIMPEZA DE DADOS LOCAIS
-  // ==========================================================================
+  // === 15. PRIVACIDADE LGPD E LIMPEZA DE DADOS LOCAIS ===
 
   const PRIVACY_STORAGE_KEY = 'utfpr_auxilio_privacy_consent';
 
@@ -2643,15 +2602,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================================================
-  // 11. INICIALIZAÇÃO DO APP
-  // ==========================================================================
+  // === 16. INICIALIZAÇÃO DA APLICAÇÃO ===
   
   buildSidebarNav();
   handleRoute();
   initPrivacyBanner();
   initClearDataButton();
   
-  // Escuta mudanças de hash na URL para navegação por links do navegador
   window.addEventListener('hashchange', handleRoute);
 });
