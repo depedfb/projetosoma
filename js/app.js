@@ -251,6 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const pageWrapper = document.createElement('div');
     pageWrapper.className = 'page-content-wrapper fade-in';
+    if (page.dark) {
+      pageWrapper.classList.add('page-dark');
+    }
+    if (page.className) {
+      pageWrapper.classList.add(page.className);
+    }
     
     // Caso especial: Capa (Página de Boas-vindas)
     if (activePageIndex === 0) {
@@ -797,10 +803,10 @@ document.addEventListener('DOMContentLoaded', () => {
           Projeto SOMA 2026
         </span>
         <p style="font-size: 0.98rem; color: var(--text-muted); line-height: 1.5; margin: 4px 0 0 0;">
-          Site desenvolvido pelos estudantes guias da UTFPR – Câmpus Francisco Beltrão
+          Guia desenvolvido pelos estudantes guias da UTFPR – Câmpus Francisco Beltrão
         </p>
         <p style="font-size: 1.08rem; font-weight: 650; color: var(--text-main); line-height: 1.4; margin: 0;">
-          Andrey Luisi Dantas Matias &bull; Samuel Thiago Telles Rodrigues
+          Andrey Luisi Dantas Matias <br>  Samuel Thiago Telles Rodrigues
         </p>
         <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">
           <strong style="color: var(--text-main);">Orientação:</strong> Kleber Durat
@@ -808,7 +814,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       
       <div class="capa-description-box">
-        <p>Este informativo interativo foi criado para simplificar o seu processo de inscrição no <strong>Programa de Auxílio Estudantil da UTFPR (Edital 01/2026 PROAE)</strong>. Aqui você encontrará instruções diretas, modelos de documentos e listas de verificação para garantir que sua solicitação seja enviada sem erros.</p>
+        <p>Este informativo interativo foi criado para simplificar o seu processo de inscrição no <strong>Programa de Auxílio Estudantil da UTFPR (Edital Nº 01/2026 PROGRAD/ASSAE)</strong>. Aqui você encontrará instruções diretas, modelos de documentos e listas de verificação para garantir que sua solicitação seja enviada sem erros.</p>
       </div>
       
       <div class="capa-features-grid">
@@ -925,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       <!-- Passo 1: Edital em Mãos -->
       <div class="wizard-step active" id="step-edital">
-        <p class="wizard-question">1. Você já leu o Edital 01/2026 PROAE ou o tem em mãos?</p>
+        <p class="wizard-question">1. Você já leu o Edital 01/2026 PROGRAD/ASSAE ou o tem em mãos?</p>
         <div class="wizard-options">
           <button class="wizard-opt-btn" data-value="sim">Sim, já li / estou com ele</button>
           <button class="wizard-opt-btn" data-value="nao">Não li ainda</button>
@@ -1757,7 +1763,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Reaproveitamento de Documentos Autorizado
           </div>
-          <p style="margin-top: 8px; font-size: 0.9rem; font-weight: 550; color: var(--text-main);">Você atende aos critérios do Item 5.1 do Edital 01/2026 PROAE. Seu cadastro socioeconômico de 2025 será reaproveitado.</p>
+          <p style="margin-top: 8px; font-size: 0.9rem; font-weight: 550; color: var(--text-main);">Você atende aos critérios do Item 5.1 do Edital 01/2026 PROGRAD/ASSAE. Seu cadastro socioeconômico de 2025 será reaproveitado.</p>
         `;
       } else {
         let isEligibleGeneral = (wizardState.desempenhoOk !== false) && (wizardState.rendaElegivel !== false);
