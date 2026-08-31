@@ -17,7 +17,7 @@ As simulações e respostas do checklist ficam salvas apenas no próprio navegad
 ## Créditos
 
 - **Desenvolvimento:** Andrey Luisi Dantas Matias e Samuel Thiago Telles Rodrigues
-- **Orientação:** Prof. Kleber Durat
+- **Orientação:** Dr. Kleber Durat
 - **Projeto SOMA 2026** — UTFPR Câmpus Francisco Beltrão
 
 
