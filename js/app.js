@@ -778,7 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
           Projeto SOMA 2026
         </span>
         <p style="font-size: 0.98rem; color: var(--text-muted); line-height: 1.5; margin: 4px 0 0 0;">
-          Guia desenvolvido pelos estudantes guias da UTFPR – Câmpus Francisco Beltrão
+          Desenvolvido pelos estudantes guias da UTFPR
         </p>
         <p style="font-size: 1.08rem; font-weight: 650; color: var(--text-main); line-height: 1.4; margin: 0;">
           Andrey Luisi Dantas Matias <br>  Samuel Thiago Telles Rodrigues
