@@ -164,8 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function handleRoute() {
     const hash = window.location.hash;
+    const simIndex = allPages.findIndex(p => p.index === 1);
+    const defaultIndex = simIndex !== -1 ? simIndex : 0;
+
+    if (!hash || hash === '#' || hash === '#simulador') {
+      navigateToPage(defaultIndex);
+      return;
+    }
+
     const pageMatch = hash.match(/^#page-(\d+)$/);
-    
     if (pageMatch) {
       const pageIndexAttr = parseInt(pageMatch[1], 10);
       const targetIndex = allPages.findIndex(p => p.index === pageIndexAttr);
@@ -175,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    navigateToPage(0);
+    navigateToPage(defaultIndex);
   }
 
   function navigateToPage(index) {
@@ -232,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Caso especial: Capa (Página de Boas-vindas)
-    if (activePageIndex === 0) {
+    if (page.index === 0) {
       renderCapa(pageWrapper, page);
       pageContainer.appendChild(pageWrapper);
       
@@ -858,8 +865,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ação do Botão Começar
     const startBtn = capaDiv.querySelector('#startReadingBtn');
     startBtn.addEventListener('click', () => {
-      // Vai para a página "Antes de começar" (Índice 1 no array final achatado, que é o index 2 original)
-      navigateToPage(1);
+      // Vai para a página "Antes de começar" (index 2 original)
+      const targetIdx = allPages.findIndex(p => p.index === 2);
+      navigateToPage(targetIdx !== -1 ? targetIdx : 0);
     });
 
     // Ação de clique nos cards da capa para garantir navegação imediata e consistente
@@ -899,11 +907,26 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const wizardCard = document.createElement('div');
     wizardCard.className = 'wizard-container-card';
+
+    const simDisclaimerHtml = `
+      <div class="wizard-simulation-disclaimer" role="alert">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <div>
+          <strong>AVISO IMPORTANTE — ISTO É APENAS UMA SIMULAÇÃO:</strong>
+          <span>Preencher este simulador <strong>NÃO realiza nem substitui a sua inscrição oficial</strong>. Para concorrer aos auxílios, você deve obrigatoriamente protocolar sua inscrição no Portal do Aluno / sistema oficial dentro do prazo do Edital.</span>
+        </div>
+      </div>
+    `;
     
     wizardCard.innerHTML = `
       <div class="wizard-header">
         <h2>Simulador de Elegibilidade & Roteiro de Documentos</h2>
         <p>Responda às perguntas sequencialmente para verificar se você atende às normas do Edital 01/2026 e veja a relação exata de declarações que você precisará providenciar.</p>
+        ${simDisclaimerHtml}
       </div>
       
       <!-- Passo 1: Edital em Mãos -->
@@ -928,16 +951,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Passo 2.1: Reaproveitamento (Previous Edital Status) -->
       <div class="wizard-step hidden" id="step-reaproveitamento" style="margin-top: 24px;">
-        <p class="wizard-question">2.1. Você participou do Edital de Auxílio de 2025, obteve status DEFERIDO e sua situação familiar/renda continua 100% IDÊNTICA?</p>
+        <p class="wizard-question">2.1. Você participou do Edital de Auxílio anterior, obteve status DEFERIDO e sua situação familiar/renda continua 100% IDÊNTICA (dentro do limite de até 2 anos para reaproveitamento)?</p>
+        <p class="wizard-note">Atenção: O reaproveitamento exige acessar o sistema oficial de cadastro e marcar a opção de reaproveitamento, sendo permitido por <strong>no máximo 2 anos</strong>. Após esse período, é obrigatório refazer o cadastro documental completo (CNIS, IRPF, documentos de renda, identidade, CPF e vínculo da UTFPR).</p>
         <div class="wizard-options">
-          <button class="wizard-opt-btn" data-value="sim">Sim (Elegível para Reaproveitamento)</button>
-          <button class="wizard-opt-btn" data-value="nao">Não / Tive alterações na renda ou família</button>
+          <button class="wizard-opt-btn" data-value="sim">Sim (Elegível para Reaproveitamento — até 2 anos)</button>
+          <button class="wizard-opt-btn" data-value="nao">Não / Tive alterações ou já passou de 2 anos</button>
         </div>
         <div class="wizard-feedback" style="display: none; margin-top: 12px;"></div>
       </div>
 
       <!-- Passo 3: Desempenho Acadêmico (Academic Performance) -->
       <div class="wizard-step hidden" id="step-desempenho" style="margin-top: 24px;">
+        ${simDisclaimerHtml}
         <p class="wizard-question">3. O seu índice de reprovações ou cancelamentos de disciplinas ultrapassou 33% das disciplinas cursadas?</p>
         <p class="wizard-note">Nota: O estudante não precisa calcular o índice de atenuação. Essa análise é realizada internamente pela UTFPR.</p>
         <div class="wizard-options">
@@ -976,6 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Passo 6: Fontes de Renda -->
       <div class="wizard-step hidden" id="step-fontes-renda" style="margin-top: 24px;">
+        ${simDisclaimerHtml}
         <p class="wizard-question">6. Quais são as fontes de renda existentes no seu grupo familiar? (Selecione todas que se aplicam)</p>
         <div class="wizard-options-vertical checkbox-group" style="gap: 10px;">
           <label class="wizard-checkbox-label">
@@ -1051,6 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Passo 8: Imposto de Renda -->
       <div class="wizard-step hidden" id="step-irpf" style="margin-top: 24px;">
+        ${simDisclaimerHtml}
         <p class="wizard-question">8. Qual a situação do Imposto de Renda (IRPF) dos membros maiores de 18 anos?</p>
         <div class="wizard-options-vertical">
           <button class="wizard-opt-btn text-left" data-value="todos_declararam">Todos os membros maiores de 18 anos declararam IRPF</button>
@@ -1084,6 +1111,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <input type="checkbox" name="situacao-especial" value="outros_casos">
             <span>Outras situações atípicas (ex: abandono, perda de moradia, justificação excepcional)</span>
           </label>
+          <label class="wizard-checkbox-label">
+            <input type="checkbox" name="situacao-especial" value="nao_aplica" id="especiais-nao-aplica">
+            <span><strong>Não / Nenhuma das situações acima se aplica</strong></span>
+          </label>
         </div>
         <div class="wizard-feedback" style="display: none; margin-top: 12px;"></div>
         <button id="wizard-btn-especiais-next" class="wizard-btn-calc" style="margin-top: 16px; width: 100%;">Avançar</button>
@@ -1091,6 +1122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Passo 10: Confirmação de Pré-requisitos Obrigatórios (NEW) -->
       <div class="wizard-step hidden" id="step-prerequisitos" style="margin-top: 24px;">
+        ${simDisclaimerHtml}
         <p class="wizard-question">10. Confirmação de Pré-requisitos Obrigatórios</p>
         <p class="wizard-note">Por favor, declare ciência e confirme os pré-requisitos fundamentais para a sua inscrição:</p>
         <div class="wizard-options-vertical checkbox-group" style="gap: 10px;">
@@ -1108,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
         </div>
         <div class="wizard-feedback" style="display: none; margin-top: 12px;"></div>
-        <button id="wizard-btn-prereq-next" class="wizard-btn-calc" style="margin-top: 16px; width: 100%;" disabled>Avançar</button>
+        <button id="wizard-btn-prereq-next" type="button" class="wizard-btn-calc is-incomplete" style="margin-top: 16px; width: 100%;">Confirmar Dados e Avançar</button>
       </div>
 
       <!-- Passo 11: Termos de Uso Consciente & RU Rules (NEW) -->
@@ -1126,20 +1158,25 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
         </div>
         <div class="wizard-feedback" style="display: none; margin-top: 12px;"></div>
-        <button id="wizard-btn-termos-next" class="wizard-btn-calc" style="margin-top: 16px; width: 100%;" disabled>Gerar Roteiro Personalizado</button>
+        <button id="wizard-btn-termos-next" type="button" class="wizard-btn-calc is-incomplete" style="margin-top: 16px; width: 100%;">Gerar Roteiro Personalizado</button>
       </div>
 
       <!-- Passo 12: Resultado / Checklist Personalizado -->
       <div class="wizard-step hidden" id="step-resultado" style="margin-top: 24px;">
         <div class="wizard-result-box">
           <h3 style="color: var(--text-title); margin-bottom: 12px; font-weight: 700; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Caminho de Inscrição Recomendado</h3>
+          ${simDisclaimerHtml}
           <div id="wizard-result-eligibility" style="margin-bottom: 16px;"></div>
           <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Lista de Documentos e Declarações Obrigatórias:</h4>
           <ul class="wizard-doc-list" id="wizard-result-docs">
             <!-- Gerado via JS -->
           </ul>
           
-          <div style="margin-top: 24px; padding: 14px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; color: var(--text-main); font-weight: 500;">
+          <div style="margin-top: 20px; padding: 16px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1.5px solid var(--primary); font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
+            <p style="margin-bottom: 8px;">📝 <strong>Precisa preencher declarações?</strong> Acesse a área <a href="#page-29" style="font-weight: 700; color: var(--primary);">Como Preencher a Declaração</a> para ver exemplos em PDF preenchidos com <strong>dados falsos/fictícios</strong> (apenas para orientar onde colocar cada informação — nunca copie os dados fictícios) e baixe os arquivos editáveis em <a href="#page-27" style="font-weight: 700; color: var(--primary);">Modelos de Declarações</a>.</p>
+          </div>
+
+          <div style="margin-top: 16px; padding: 14px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; color: var(--text-main); font-weight: 500;">
             <p>💡 <strong>Apoio ao Estudante:</strong> Dificuldades ao longo do semestre? Não espere a situação piorar! A ASSAE oferece apoio pedagógico, social e de atendimento. Procure o setor no seu campus.</p>
           </div>
 
@@ -1237,10 +1274,10 @@ document.addEventListener('DOMContentLoaded', () => {
           stepEl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
             cb.checked = false;
           });
-          // Re-desabilita botões se aplicável
+          // Re-marca botões como incompletos se aplicável
           const nextBtn = stepEl.querySelector('.wizard-btn-calc');
           if (nextBtn && (stepOrder[i] === 'step-prerequisitos' || stepOrder[i] === 'step-termos')) {
-            nextBtn.disabled = true;
+            nextBtn.classList.add('is-incomplete');
           }
           // Oculta botões de navegação dinâmica criados no DOM
           if (stepOrder[i] === 'step-independencia') {
@@ -1358,12 +1395,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (val === 'sim') {
           showFeedback(stepReaproveitamento, 'success', `
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            <strong>Elegível para Reaproveitamento de Documentos (Item 5.1):</strong> Ótimo! Como veterano com situação idêntica à de 2025, seu processo de envio de documentos é simplificado. Prossiga para avaliar o desempenho acadêmico.
+            <strong>Elegível para Reaproveitamento (Item 5.1):</strong> No sistema oficial de cadastro, você deverá entrar e marcar a opção <strong>Reaproveitamento</strong>. Lembre-se de que o reaproveitamento é válido por <strong>no máximo 2 anos</strong>; após esse prazo, é obrigatório refazer o cadastro documental completo. Prossiga para avaliar o desempenho acadêmico.
           `);
         } else {
           showFeedback(stepReaproveitamento, 'warning', `
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            Entendido. Como houve alteração ou não participou do último edital, você fará uma inscrição completa. Prossiga para avaliar o desempenho acadêmico.
+            Entendido. Como houve alteração ou já passou o limite de <strong>2 anos</strong> do reaproveitamento, será necessário realizar o <strong>cadastro documental completo</strong> (CNIS, IRPF, documentos de renda, identidade, CPF e vínculo da UTFPR). Prossiga para avaliar o desempenho acadêmico.
           `);
         }
         
@@ -1653,12 +1690,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Passo 9: Situações Especiais
     const stepEspeciais = wizardCard.querySelector('#step-especiais');
     const btnEspeciaisNext = stepEspeciais.querySelector('#wizard-btn-especiais-next');
+    const especiaisCbs = stepEspeciais.querySelectorAll('input[name="situacao-especial"]');
+    const especiaisNaoAplicaCb = stepEspeciais.querySelector('#especiais-nao-aplica');
+
+    especiaisCbs.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb === especiaisNaoAplicaCb && cb.checked) {
+          especiaisCbs.forEach(other => {
+            if (other !== especiaisNaoAplicaCb) other.checked = false;
+          });
+        } else if (cb !== especiaisNaoAplicaCb && cb.checked && especiaisNaoAplicaCb) {
+          especiaisNaoAplicaCb.checked = false;
+        }
+      });
+    });
+
     btnEspeciaisNext.addEventListener('click', () => {
       const selectedEspeciais = [];
       const checkboxes = stepEspeciais.querySelectorAll('input[name="situacao-especial"]:checked');
       checkboxes.forEach(cb => {
-        selectedEspeciais.push(cb.value);
+        if (cb.value !== 'nao_aplica') {
+          selectedEspeciais.push(cb.value);
+        }
       });
+
+      if (checkboxes.length === 0) {
+        showFeedback(stepEspeciais, 'warning', `
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Selecione uma ou mais situações acima, ou marque <strong>"Não / Nenhuma das situações acima se aplica"</strong> para avançar.
+        `);
+        return;
+      }
       
       wizardState.situacoesEspeciais = selectedEspeciais;
       saveWizardState();
@@ -1673,7 +1735,7 @@ document.addEventListener('DOMContentLoaded', () => {
       revealStep('step-prerequisitos');
     });
 
-    // Passo 10: Prerequisites Check (NEW)
+    // Passo 10: Prerequisites Check (Confirmar Dados)
     const stepPrereq = wizardCard.querySelector('#step-prerequisitos');
     const btnPrereqNext = stepPrereq.querySelector('#wizard-btn-prereq-next');
     const prereqCbs = [
@@ -1683,23 +1745,32 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     function checkPrereq() {
       const allChecked = prereqCbs.every(cb => cb.checked);
-      btnPrereqNext.disabled = !allChecked;
+      btnPrereqNext.classList.toggle('is-incomplete', !allChecked);
     }
     prereqCbs.forEach(cb => cb.addEventListener('change', checkPrereq));
 
     btnPrereqNext.addEventListener('click', () => {
+      const allChecked = prereqCbs.every(cb => cb.checked);
+      if (!allChecked) {
+        showFeedback(stepPrereq, 'warning', `
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Por favor, marque todos os 3 itens obrigatórios acima para confirmar seus dados e avançar.
+        `);
+        return;
+      }
+
       wizardState.prereqOk = true;
       saveWizardState();
       hideDownstream('step-prerequisitos');
       showFeedback(stepPrereq, 'success', `
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        Pré-requisitos confirmados. Prossiga para a declaração de termos de uso do benefício.
+        Dados e pré-requisitos confirmados! Prossiga para a declaração de termos de uso do benefício.
       `);
       
       revealStep('step-termos');
     });
 
-    // Passo 11: Terms of Use & RU Rules (NEW)
+    // Passo 11: Terms of Use & RU Rules
     const stepTermos = wizardCard.querySelector('#step-termos');
     const btnTermosNext = stepTermos.querySelector('#wizard-btn-termos-next');
     const termosCbs = [
@@ -1708,11 +1779,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     function checkTermos() {
       const allChecked = termosCbs.every(cb => cb.checked);
-      btnTermosNext.disabled = !allChecked;
+      btnTermosNext.classList.toggle('is-incomplete', !allChecked);
     }
     termosCbs.forEach(cb => cb.addEventListener('change', checkTermos));
 
     btnTermosNext.addEventListener('click', () => {
+      const allChecked = termosCbs.every(cb => cb.checked);
+      if (!allChecked) {
+        showFeedback(stepTermos, 'warning', `
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Por favor, marque os 2 termos acima para gerar o seu roteiro personalizado.
+        `);
+        return;
+      }
+
       wizardState.termosOk = true;
       wizardState.isCompleted = true;
       saveWizardState();
@@ -1725,7 +1805,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         generateResults();
         revealStep('step-resultado');
-      }, 1000);
+      }, 600);
     });
 
     function generateResults() {
@@ -1740,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Reaproveitamento de Documentos Autorizado
           </div>
-          <p style="margin-top: 8px; font-size: 0.9rem; font-weight: 550; color: var(--text-main);">Você atende aos critérios do Item 5.1 do Edital 01/2026 PROGRAD/ASSAE. Seu cadastro socioeconômico de 2025 será reaproveitado.</p>
+          <p style="margin-top: 8px; font-size: 0.9rem; font-weight: 550; color: var(--text-main);">Você atende aos critérios do Item 5.1 do Edital 01/2026 PROGRAD/ASSAE. Para efetivar, acesse o <strong>sistema oficial de cadastro</strong> e marque a opção <strong>Reaproveitamento</strong>. Atenção: o reaproveitamento é permitido por <strong>no máximo 2 anos</strong>; após esse prazo, será obrigatório refazer o cadastro documental completo (CNIS, IRPF, documentos de renda, identidade, CPF e vínculo da UTFPR).</p>
         `;
       } else {
         let isEligibleGeneral = (wizardState.desempenhoOk !== false) && (wizardState.rendaElegivel !== false);
@@ -1773,9 +1853,8 @@ document.addEventListener('DOMContentLoaded', () => {
       let docsList = [];
       
       if (wizardState.reaproveitamento === 'sim') {
-        // Roteiro de Reaproveitamento Simplificado
-        docsList.push('<b>Termo de Reaproveitamento de Documentos:</b> Assinado eletronicamente via conta gov.br pelo estudante, manifestando interesse em reaproveitar os dados declarados no Edital 01/2025.');
-        docsList.push('<b>Extrato do CNIS Completo:</b> Extrato de Relações Previdenciárias (Meu INSS) para você e para <b>todos os membros maiores de 18 anos</b> do grupo familiar, emitido no ano corrente.');
+        // Roteiro de Reaproveitamento Simplificado (apenas o Termo; CNIS não é necessário)
+        docsList.push('<b>Termo de Reaproveitamento de Documentos:</b> Assinado eletronicamente via conta gov.br pelo estudante (e opção marcada no sistema oficial de cadastro), manifestando interesse em reaproveitar os dados declarados no Edital anterior (válido por no máximo 2 anos). <em>Não é necessário enviar novo CNIS.</em>');
       } else {
         // Inscrição Completa
         
@@ -1970,8 +2049,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       inputMembros.value = 1;
       inputRenda.value = 0;
-      btnPrereqNext.disabled = true;
-      btnTermosNext.disabled = true;
+      btnPrereqNext.disabled = false;
+      btnTermosNext.disabled = false;
+      btnPrereqNext.classList.add('is-incomplete');
+      btnTermosNext.classList.add('is-incomplete');
       
       // Oculta todos os passos exceto o primeiro
       wizardCard.querySelectorAll('.wizard-step').forEach(stepEl => {
@@ -2332,10 +2413,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedState.prereqOk) {
           wizardState.prereqOk = true;
           prereqCbs.forEach(cb => cb.checked = true);
-          btnPrereqNext.disabled = false;
+          btnPrereqNext.classList.remove('is-incomplete');
           showFeedback(stepPrereq, 'success', `
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Pré-requisitos confirmados. Prossiga para a declaração de termos de uso do benefício.
+            Dados e pré-requisitos confirmados! Prossiga para a declaração de termos de uso do benefício.
           `);
           revealStep('step-termos');
         }
@@ -2344,7 +2425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedState.termosOk) {
           wizardState.termosOk = true;
           termosCbs.forEach(cb => cb.checked = true);
-          btnTermosNext.disabled = false;
+          btnTermosNext.classList.remove('is-incomplete');
           showFeedback(stepTermos, 'success', `
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Termos declarados e aceitos! Gerando o seu roteiro de documentos personalizado...
@@ -2555,7 +2636,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const hasAccepted = localStorage.getItem(PRIVACY_STORAGE_KEY);
-      if (!hasAccepted) {
+      if (hasAccepted) {
+        banner.classList.add('hidden');
+        banner.classList.remove('is-visible');
+        banner.setAttribute('aria-hidden', 'true');
+      } else {
+        banner.classList.remove('hidden');
         setTimeout(() => {
           banner.classList.add('is-visible');
           banner.setAttribute('aria-hidden', 'false');
@@ -2568,11 +2654,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
           console.warn('Não foi possível salvar preferência no localStorage:', e);
         }
+        banner.classList.add('hidden');
         banner.classList.remove('is-visible');
         banner.setAttribute('aria-hidden', 'true');
       });
     } catch (e) {
       console.warn('Acesso ao localStorage restrito:', e);
+      btnAccept.addEventListener('click', () => {
+        banner.classList.add('hidden');
+        banner.classList.remove('is-visible');
+        banner.setAttribute('aria-hidden', 'true');
+      });
     }
   }
 
@@ -2593,6 +2685,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (window.sessionStorage) {
             sessionStorage.clear();
           }
+          window.location.hash = '';
           window.location.reload();
         } catch (err) {
           console.error('Erro ao limpar localStorage:', err);
