@@ -2607,3 +2607,122 @@ button, input, select {
   color: #FDE68A;
 }
 
+/* ==========================================================================
+   OTIMIZAÇÃO MOBILE (TELEMÓVEIS) PARA O SIMULADOR E RESULTADO
+   ========================================================================== */
+
+.wizard-doc-list li > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.wizard-doc-download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: rgba(0, 93, 183, 0.1);
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .wizard-container-card {
+    padding: 16px 12px;
+    gap: 18px;
+  }
+
+  .wizard-header h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+
+  .wizard-header p {
+    font-size: 0.88rem;
+  }
+
+  .wizard-step {
+    border-left-width: 3px;
+    padding-left: 10px;
+    gap: 10px;
+  }
+
+  #step-resultado.wizard-step {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .wizard-question {
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+
+  .wizard-note {
+    font-size: 0.84rem;
+  }
+
+  .wizard-opt-btn,
+  .wizard-checkbox-label {
+    padding: 12px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+
+  .wizard-btn-calc,
+  .wizard-btn-reiniciar {
+    max-width: 100%;
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 0.92rem;
+  }
+
+  .wizard-simulation-disclaimer {
+    padding: 10px 12px;
+    gap: 10px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .wizard-result-box {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  .wizard-result-box h3 {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .status-badge {
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.86rem;
+    line-height: 1.35;
+    justify-content: flex-start;
+  }
+
+  .wizard-doc-list {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .wizard-doc-list li {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .wizard-doc-download-link {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 4px 10px;
+  }
+}
+
+
