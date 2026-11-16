@@ -1649,27 +1649,6 @@ const GUIA_DATA = [
         ]
       },
       {
-        "index": 29,
-        "title": "COMO PREENCHER A DECLARAÇÃO",
-        "eyebrow": "EXEMPLOS COM DADOS FALSOS / FICTÍCIOS",
-        "subtitle": "Modelos em PDF preenchidos com informações fictícias apenas para ilustrar o preenchimento",
-        "dark": false,
-        "elements": [
-          {
-            "type": "highlight",
-            "content": "<b>ATENÇÃO — INFORMAÇÕES FALSAS / FICTÍCIAS:</b> Os modelos preenchidos disponibilizados nesta seção contêm <b>DADOS FALSOS (fictícios)</b>, criados exclusivamente para mostrar como preencher cada campo. <b>NUNCA copie os dados dos exemplos</b> — preencha a sua declaração exclusivamente com as suas informações reais e verdadeiras."
-          },
-          {
-            "type": "card",
-            "content": "<b>Como usar os exemplos em PDF:</b><br>1. Baixe o modelo editável (.docx) correspondente na aba <a href='#page-27'>Modelos de Declarações</a>.<br>2. Consulte o PDF de exemplo preenchido (com dados fictícios) que será anexado nesta área para conferir o formato de datas, valores e assinaturas.<br>3. Preencha o seu arquivo apenas com os <b>seus dados verdadeiros</b> e assine (gov.br ou assinatura física igual ao documento)."
-          },
-          {
-            "type": "card",
-            "content": "<b>Exemplos de Preenchimento (em breve / PDFs com dados fictícios):</b><br>• Exemplo Declaração 1 - Renda (dados fictícios)<br>• Exemplo Declaração 2 - Situação de Moradia (dados fictícios)<br>• Exemplo Declaração 3 - Atividade Rural (dados fictícios)<br>• Exemplo Declaração 4 - Independência Financeira (dados fictícios)<br>• Exemplo Declaração 5 - Diversas Situações (dados fictícios)<br>• Exemplo Declaração 6 - Pagamento de Aluguel (dados fictícios)<br>• Exemplo Declaração 7 - Não Obrigatoriedade de IRPF (dados fictícios)<br>• Exemplo Declaração 8 - Renda de Terceiros (dados fictícios)"
-          }
-        ]
-      },
-      {
         "index": 28,
         "title": "EDITAL OFICIAL",
         "eyebrow": "DOCUMENTO BASE",

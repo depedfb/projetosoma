@@ -1171,12 +1171,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <ul class="wizard-doc-list" id="wizard-result-docs">
             <!-- Gerado via JS -->
           </ul>
-          
-          <div style="margin-top: 20px; padding: 16px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1.5px solid var(--primary); font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
-            <p style="margin-bottom: 8px;">📝 <strong>Precisa preencher declarações?</strong> Acesse a área <a href="#page-29" style="font-weight: 700; color: var(--primary);">Como Preencher a Declaração</a> para ver exemplos em PDF preenchidos com <strong>dados falsos/fictícios</strong> (apenas para orientar onde colocar cada informação — nunca copie os dados fictícios) e baixe os arquivos editáveis em <a href="#page-27" style="font-weight: 700; color: var(--primary);">Modelos de Declarações</a>.</p>
-          </div>
 
-          <div style="margin-top: 16px; padding: 14px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; color: var(--text-main); font-weight: 500;">
+          <div style="margin-top: 24px; padding: 14px; background-color: var(--bg-card-hover); border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; color: var(--text-main); font-weight: 500;">
             <p>💡 <strong>Apoio ao Estudante:</strong> Dificuldades ao longo do semestre? Não espere a situação piorar! A ASSAE oferece apoio pedagógico, social e de atendimento. Procure o setor no seu campus.</p>
           </div>
 
